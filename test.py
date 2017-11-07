@@ -1,0 +1,1 @@
+print(type(open('index.html', 'rb').read()))
