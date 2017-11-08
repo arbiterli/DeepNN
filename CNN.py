@@ -1,10 +1,11 @@
 import tensorflow as tf
 
 class cnn:
-    def __init__(self, batch_size=128):
+    def __init__(self, labels, batch_size=128):
         g = tf.Graph()
         with g.as_default():
             self.X = tf.placeholder(tf.float32, shape=(batch_size, 28, 28, 1))
+            self.Y = tf.one_hot(indices=tf.cast(labels, tf.int32), depth=10)
             self.build_graph()
 
     def build_graph(self):
@@ -30,11 +31,22 @@ class cnn:
 
         pool_flat = tf.reshape(pooling2, [-1, 7*7*64])
         with tf.variable_scope('dense'):
-            dense = tf.layers.dense(inputs=pooling2, units=1024, activation=tf.nn.relu)
+            dense = tf.layers.dense(inputs=pool_flat, units=1024, activation=tf.nn.relu)
 
         with tf.variable_scope('dropout'):
             dropout = tf.layers.dropout(inputs=dense, rate=0.4, training=True)
 
-        
+        with tf.variable_scope('output'):
+            logits = tf.layers.dense(inputs=dropout, units=10)
+
+        predictions = {
+            "classes": tf.argmax(input=logits, axis=1),
+            "probabilities": tf.nn.softmax(logits, name="softmax_tensor")
+        }
+
+        loss = tf.losses.softmax_cross_entropy(
+            onehot_labels=self.Y, logits=logits)
+
+
 
 
