@@ -7,6 +7,8 @@ class cnn:
             self.X = tf.placeholder(tf.float32, shape=(batch_size, 28, 28, 1))
             self.Y = tf.one_hot(indices=tf.cast(labels, tf.int32), depth=10)
             self.build_graph()
+            self.loss = tf.losses.softmax_cross_entropy(onehot_labels=self.Y, logits=self.output)
+            self.optimize()
 
     def build_graph(self):
         with tf.variable_scope('conv1'):
@@ -37,15 +39,11 @@ class cnn:
             dropout = tf.layers.dropout(inputs=dense, rate=0.4, training=True)
 
         with tf.variable_scope('output'):
-            logits = tf.layers.dense(inputs=dropout, units=10)
+            self.output = tf.layers.dense(inputs=dropout, units=10)
 
-        predictions = {
-            "classes": tf.argmax(input=logits, axis=1),
-            "probabilities": tf.nn.softmax(logits, name="softmax_tensor")
-        }
-
-        loss = tf.losses.softmax_cross_entropy(
-            onehot_labels=self.Y, logits=logits)
+    def optimize(self):
+        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+        self.train_op = optimizer.minimize(self.loss, global_step=tf.train.get_global_step())
 
 
 
