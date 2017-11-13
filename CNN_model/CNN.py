@@ -2,12 +2,12 @@ import tensorflow as tf
 
 
 class CNN:
-    def __init__(self, batch_size=100):
+    def __init__(self, batch_size=None):
         self.graph = tf.Graph()
         with self.graph.as_default():
             self.images = tf.placeholder(tf.float32, shape=(batch_size, 28 * 28), name='input_images')
             self.labels = tf.placeholder(tf.float32, shape=(batch_size,), name='input_labels')
-            self.X = tf.reshape(self.images, [batch_size, 28, 28, 1])
+            self.X = tf.reshape(self.images, [-1, 28, 28, 1])
             self.Y = tf.one_hot(indices=tf.cast(self.labels, tf.int32), depth=10)
             self.build_graph()
             self.loss = tf.losses.softmax_cross_entropy(onehot_labels=self.Y, logits=self.output)
@@ -46,5 +46,6 @@ class CNN:
 
     def optimize(self):
         optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-        self.train_op = optimizer.minimize(self.loss, global_step=tf.train.get_global_step())
+        self.global_step = tf.Variable(0, name='global_step', trainable=False)
+        self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
 
