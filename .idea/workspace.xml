@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="08bc8971-39b7-4456-aa27-a0a7e9040864" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CNN_model/CNN.py" afterPath="$PROJECT_DIR$/CNN_model/CNN.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/traing_cnn.py" afterPath="$PROJECT_DIR$/traing_cnn.py" />
-    </list>
+    <list default="true" id="08bc8971-39b7-4456-aa27-a0a7e9040864" name="Default" comment="" />
     <ignored path="DeepNN.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,8 +36,8 @@
       <file leaf-file-name="traing_cnn.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/traing_cnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="45" column="26" selection-start-line="45" selection-start-column="26" selection-end-line="45" selection-end-column="26" />
+            <state relative-caret-position="419">
+              <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -87,8 +83,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="586" />
-    <option name="y" value="123" />
+    <option name="x" value="359" />
+    <option name="y" value="125" />
     <option name="width" value="1476" />
     <option name="height" value="874" />
   </component>
@@ -455,7 +451,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="586" y="123" width="1476" height="874" extended-state="0" />
+    <frame x="359" y="125" width="1476" height="874" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13481584" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -751,8 +747,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/traing_cnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="45" column="26" selection-start-line="45" selection-start-column="26" selection-end-line="45" selection-end-column="26" />
+        <state relative-caret-position="419">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
