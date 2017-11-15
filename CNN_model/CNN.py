@@ -45,7 +45,7 @@ class CNN:
             self.output = tf.layers.dense(inputs=dropout, units=10)
 
     def optimize(self):
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+        optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
         self.global_step = tf.Variable(0, name='global_step', trainable=False)
         self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
 
