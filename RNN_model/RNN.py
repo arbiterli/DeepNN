@@ -8,20 +8,29 @@ class RNN():
         self.graph = tf.Graph()
 
         with self.graph.as_default():
-
             self.X = tf.placeholder(tf.float32, shape=[batch_size, max_time, embedding_size])
             self.Y = tf.placeholder(tf.float32, shape=[batch_size, max_time, embedding_size])
             self.build_graph()
             self.init_op = tf.global_variables_initializer()
+            self.loss = tf.losses.softmax_cross_entropy(onehot_labels=self.Y, logits=self.output)
+            self.optimize()
 
     def build_graph(self):
         with tf.variable_scope('LSTM'):
-            self.cell = tf.nn.rnn_cell.LSTMCell(num_units=self.hidden_unit_size)
-            # self.cell_layer = tf.nn.rnn_cell.MultiRNNCell([self.cell]*self.num_layers)
-            self.hidden_output, self.state = tf.nn.dynamic_rnn(cell=self.cell, inputs=self.X, dtype=tf.float32)
+            cells = list()
+            for i in range(self.num_layers):
+                # tf.nn.rnn_cell.DropoutWrapper: use this when need dropout
+                cells.append(tf.nn.rnn_cell.LSTMCell(num_units=self.hidden_unit_size))
+            self.cell_layers = tf.nn.rnn_cell.MultiRNNCell(cells)
+            self.hidden_output, self.state = tf.nn.dynamic_rnn(cell=self.cell_layers, inputs=self.X, dtype=tf.float32)
 
         with tf.variable_scope('dense'):
             self.output = tf.layers.dense(inputs=self.hidden_output, units=10)
+
+    def optimize(self):
+        optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
+        self.global_step = tf.Variable(0, name='global_step', trainable=False)
+        self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
 
 
 if __name__ == '__main__':
