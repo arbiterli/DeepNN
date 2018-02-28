@@ -24,7 +24,7 @@ class S2SNN():
                 # use this when need dropout
                 cells.append(tf.nn.rnn_cell.DropoutWrapper(
                     tf.nn.rnn_cell.LSTMCell(num_units=self.hidden_unit_size),
-                    output_keep_prob=0.5))
+                    output_keep_prob=0.6))
 
             self.cell_layers = tf.nn.rnn_cell.MultiRNNCell(cells)
             self.hidden_output, self.hidden_state = tf.nn.dynamic_rnn(cell=self.cell_layers, inputs=self.X, dtype=tf.float32)
