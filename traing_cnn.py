@@ -16,7 +16,8 @@ def main(_):
     train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
     eval_data = mnist.test.images  # Returns np.array
     eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
-
+    print(train_data.shape)
+    print(type(train_data))
     cnn = CNN()
     batch_size = 100
     batch_num = int(train_data.shape[0] / batch_size)
