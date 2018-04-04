@@ -23,7 +23,6 @@ class RNN():
                 output_keep_prob=0.7)
             self.hidden_output, self.state = tf.nn.dynamic_rnn(cell=cells, inputs=self.X, dtype=tf.float32)
 
-
         weight = tf.Variable(tf.truncated_normal([self.hidden_unit_size, label_size]))
         bias = tf.Variable(tf.zeros([label_size]))
         self.output = tf.matmul(self.hidden_output[:, -1, :], weight) + bias
