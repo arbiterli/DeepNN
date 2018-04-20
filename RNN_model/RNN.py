@@ -43,7 +43,9 @@ class RNN():
     def optimize(self):
         optimizer = tf.train.AdamOptimizer(learning_rate=0.0001)
         self.global_step = tf.Variable(0, name='global_step', trainable=False)
-        self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
+        self.gradient = optimizer.compute_gradients(self.loss)
+        self.train_op = optimizer.apply_gradients(self.gradient, global_step=self.global_step)
+        # self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
 
 
 if __name__ == '__main__':
