@@ -23,7 +23,6 @@ class RNN():
                 output_keep_prob=0.7)
             self.hidden_output, self.state = tf.nn.dynamic_rnn(cell=cells, inputs=self.X, dtype=tf.float32)
 
-
         weight = tf.Variable(tf.truncated_normal([self.hidden_unit_size, label_size]))
         bias = tf.Variable(tf.zeros([label_size]))
         self.output = tf.matmul(self.hidden_output[:, -1, :], weight) + bias
@@ -44,7 +43,9 @@ class RNN():
     def optimize(self):
         optimizer = tf.train.AdamOptimizer(learning_rate=0.0001)
         self.global_step = tf.Variable(0, name='global_step', trainable=False)
-        self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
+        self.gradient = optimizer.compute_gradients(self.loss)
+        self.train_op = optimizer.apply_gradients(self.gradient, global_step=self.global_step)
+        # self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
 
 
 if __name__ == '__main__':
