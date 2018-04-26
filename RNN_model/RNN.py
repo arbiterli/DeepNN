@@ -3,8 +3,8 @@ import tensorflow as tf
 
 class RNN():
     def __init__(self, time_step, vector_size, label_size, batch_size=None):
-        self.hidden_unit_size = 64
-        self.num_layers = 3
+        self.hidden_unit_size = 32
+        self.num_layers = 2
         self.graph = tf.Graph()
 
         with self.graph.as_default():
@@ -18,15 +18,19 @@ class RNN():
 
     def build_graph(self, label_size):
         with tf.variable_scope('LSTM'):
-            cells = tf.nn.rnn_cell.DropoutWrapper(
-                tf.nn.rnn_cell.BasicLSTMCell(num_units=self.hidden_unit_size),
-                output_keep_prob=0.7)
-            self.hidden_output, self.state = tf.nn.dynamic_rnn(cell=cells, inputs=self.X, dtype=tf.float32)
+            cells = list()
+            for i in range(self.num_layers):
+                cells.append(tf.nn.rnn_cell.BasicLSTMCell(num_units=self.hidden_unit_size))
+                # cells.append(tf.nn.rnn_cell.DropoutWrapper(
+                #     tf.nn.rnn_cell.BasicLSTMCell(num_units=self.hidden_unit_size),
+                #     output_keep_prob=0.6))
+            lstm_cells = tf.nn.rnn_cell.MultiRNNCell(cells, state_is_tuple=True)
+            self.hidden_output, self.state = tf.nn.dynamic_rnn(cell=lstm_cells, inputs=self.X, dtype=tf.float32)
 
         weight = tf.Variable(tf.truncated_normal([self.hidden_unit_size, label_size]))
         bias = tf.Variable(tf.zeros([label_size]))
         self.output = tf.matmul(self.hidden_output[:, -1, :], weight) + bias
-        self.loss = tf.losses.mean_squared_error(self.Y, self.output)
+        self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.Y, logits=self.output))
 
 
         # with tf.variable_scope('dense'):
@@ -41,11 +45,11 @@ class RNN():
 
 
     def optimize(self):
-        optimizer = tf.train.AdamOptimizer(learning_rate=0.0001)
+        optimizer = tf.train.AdamOptimizer(learning_rate=0.001)
         self.global_step = tf.Variable(0, name='global_step', trainable=False)
-        self.gradient = optimizer.compute_gradients(self.loss)
-        self.train_op = optimizer.apply_gradients(self.gradient, global_step=self.global_step)
-        # self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
+        # self.gradient = optimizer.compute_gradients(self.loss)
+        # self.train_op = optimizer.apply_gradients(self.gradient, global_step=self.global_step)
+        self.train_op = optimizer.minimize(self.loss, global_step=self.global_step)
 
 
 if __name__ == '__main__':
